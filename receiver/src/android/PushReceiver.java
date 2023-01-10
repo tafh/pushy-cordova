@@ -8,13 +8,28 @@ import android.content.res.Resources;
 import android.media.RingtoneManager;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.pm.ApplicationInfo;
+import androidx.core.content.ContextCompat;
+import android.content.pm.PackageManager;
+import android.util.Log;
 
 import me.pushy.sdk.cordova.internal.config.PushyIntentExtras;
 import me.pushy.sdk.cordova.internal.util.PushyPersistence;
 
 public class PushReceiver extends BroadcastReceiver {
+
+    private int defaultNotificationColor;
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        try {
+            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getApplicationContext().getPackageName(), PackageManager.GET_META_DATA);
+            defaultNotificationColor = ContextCompat.getColor(context, ai.metaData.getInt("com.google.firebase.messaging.default_notification_color"));
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.d("PushyReceiver", "Failed to load meta-data", e);
+        } catch(Resources.NotFoundException e) {
+            Log.d("PushyReceiver", "Failed to load notification color", e);
+        }
         // Notification title and text
         String notificationTitle = getAppName(context);
         String notificationText = "";
@@ -37,7 +52,8 @@ public class PushReceiver extends BroadcastReceiver {
                 .setVibrate(new long[]{0, 400, 250, 400})
                 .setSmallIcon(getNotificationIcon(context))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentIntent(getMainActivityPendingIntent(context, intent));
+                .setContentIntent(getMainActivityPendingIntent(context, intent))
+                .setColor(defaultNotificationColor);
 
         // Get an instance of the NotificationManager service
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
