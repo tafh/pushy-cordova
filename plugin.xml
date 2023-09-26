@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="pushy-cordova" version="1.0.51">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="pushy-cordova" version="1.0.56">
     <name>PushySDK</name>
     <description>The official Pushy SDK for Cordova apps.</description>
     <license>Apache 2.0</license>
@@ -24,7 +24,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="Pushy" spec="~> 1.0.32" />
+                <pod name="Pushy" spec="~> 1.0.50" />
             </pods>
         </podspec>
 
@@ -53,8 +53,8 @@
 
     <!-- Android -->
     <platform name="android">
-        <!-- Pushy SDK -->
-        <framework src="me.pushy:sdk:1.0.87" />
+        <!-- Pushy Android SDK -->
+        <framework src="me.pushy:sdk:1.0.93" />
 
         <!-- Pushy Permissions -->
         <config-file target="AndroidManifest.xml" parent="/*">
@@ -93,14 +93,14 @@
             </receiver>
 
             <!-- Pushy Socket Service -->
-            <!-- Do not modify - internal socket service -->
-            <service android:name="me.pushy.sdk.services.PushySocketService"/>
+            <!-- Do not modify - internal service -->
+            <service android:name="me.pushy.sdk.services.PushySocketService" android:stopWithTask="false" />
 
             <!-- Pushy Job Service (added in Pushy SDK 1.0.35) -->
             <!-- Do not modify - internal service -->
             <service android:name="me.pushy.sdk.services.PushyJobService"
                 android:permission="android.permission.BIND_JOB_SERVICE"
-                android:exported="true" />
+                android:stopWithTask="false" />
 
             <!-- Pushy FCM Fallback Service -->
             <!-- Do not modify - internal service -->

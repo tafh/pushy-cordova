@@ -275,7 +275,35 @@ import UserNotifications
     @objc(setEnterpriseConfig:)
     func setEnterpriseConfig(command: CDVInvokedUrlCommand) {
         // Set Pushy Enterprise API endpoint
-        getPushyInstance().setEnterpriseConfig(apiEndpoint: command.arguments[0] as! String)
+        getPushyInstance().setEnterpriseConfig(apiEndpoint: command.arguments[0] as? String)
+        
+        // Always success
+        self.commandDelegate!.send(
+            CDVPluginResult(
+                status: CDVCommandStatus_OK
+            ),
+            callbackId: command.callbackId
+        )
+    }
+
+    @objc(setProxyEndpoint:)
+    func setProxyEndpoint(command: CDVInvokedUrlCommand) {
+        // Set proxy endpoint
+        getPushyInstance().setProxyEndpoint(proxyEndpoint: command.arguments[0] as? String)
+        
+        // Always success
+        self.commandDelegate!.send(
+            CDVPluginResult(
+                status: CDVCommandStatus_OK
+            ),
+            callbackId: command.callbackId
+        )
+    }
+
+    @objc(toggleAPNsConnectivityCheck:)
+    func toggleAPNsConnectivityCheck(command: CDVInvokedUrlCommand) {
+        // Toggle APNs connectivity check
+        getPushyInstance().toggleAPNsConnectivityCheck(command.arguments[0] as! Bool)
         
         // Always success
         self.commandDelegate!.send(
